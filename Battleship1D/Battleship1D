@@ -1,0 +1,30 @@
+import java.util.Random;
+public class Battleship1D {
+   private Tile[] tiles;
+   private int shipPoint;
+   public Battleship1D() {
+       generateGrid();
+   }
+   private void generateGrid() {
+       tiles = new Tile[7];
+       Random random = new Random();
+       shipPoint = random.nextInt(4);
+       for(int i = 0; i < 7; i++) {
+           boolean ship = i == shipPoint || (i - 1) == shipPoint || (i - 2) == shipPoint;
+           tiles[i] = new Tile(ship);
+       }
+   }
+   public boolean canShootTile(int i) {
+       return !tiles[i].getHit();
+   }
+   public boolean shootTile(int i) {
+       tiles[i].shoot();
+       return tiles[i].getHasShip();
+   }
+   public boolean isShipSunk() {
+       if(!tiles[shipPoint].getHit()) return false;
+       if(!tiles[shipPoint + 1].getHit()) return false;
+       if(!tiles[shipPoint + 2].getHit()) return false;
+       return true;
+   }
+}
