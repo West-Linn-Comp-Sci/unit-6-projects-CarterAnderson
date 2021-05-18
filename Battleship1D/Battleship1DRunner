@@ -1,0 +1,53 @@
+public class Battleship1DRunner {
+   private Scanner scanner;
+   private int guesses;
+   private Battleship1D game;
+   public static void main(String args[]) {
+       Battleship1DRunner runner = new Battleship1DRunner();
+       runner.run();
+   }
+   public Battleship1DRunner() {
+       scanner = new Scanner(System.in);
+       guesses = 0;
+       game = new Battleship1D();
+   }
+   public void run() {
+       while(true) {
+           int input = getUserInput();
+           if(game.shootTile(input)) System.out.println("Direct smash!");
+           else System.out.println("WHIFF");
+           guesses++;
+           if(game.isShipSunk()) {
+               System.out.println("You've knocked out a battleship!");
+               break;
+           }
+       }
+       System.out.println(String.format("\nGuesses: %s.\nRating: %s\n\nGood Game!", guesses, getUserRating()));
+   }
+   private int getUserInput() {
+       while(true) {
+           System.out.print("Enter a tile # between 1 and 7: ");
+           try {
+               int val = scanner.nextInt();
+               if(val > 0 && val < 8) {
+                   if(game.canShootTile(val - 1)) return val - 1;
+                   System.out.println("You've already hit that tile");
+               }
+               System.out.println("That ain't gonna work! Only integers between [1, 7] will work.");
+           } catch (InputMismatchException e) {
+               scanner.nextLine();
+               System.out.println("Whatcha doin? Only enter an integer!");
+           }
+       }
+   }
+   private String getUserRating() {
+       switch(guesses) {
+           case 3: return "POGGERS!";
+           case 4: return "Epic!";
+           case 5: return "Decent.";
+           case 6: return "Meh.";
+           case 7: return "You're dogwater";
+       }
+       return "Problem";
+   }
+}
